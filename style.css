@@ -1,26 +1,43 @@
-body{
-    background: rgb(139, 146, 114);
-    background: linear-gradient(90deg, rgba(255, 153, 0, 0.705) 35%, rgba(255, 230, 0, 0.767) 75% );
-    
-   }
-  
-  .card-header{
-    background-color: rgb(255, 123, 111);
-    color: white;
-    text-transform: uppercase;
-  } 
+body {
+  background-color: #eef2e2;
+  margin: auto;
+  text-align: center;
+  width: 100%;
+}
+img {
+  height: 225px;
+}
 
-  .card{
-     background: rgb(254,175,210);
-     background: radial-gradient(circle, rgb(255, 255, 255) 20%, rgb(253, 199, 129) 70%); 
+.country_row {
+  margin: 1%;
+  padding: 3% 0%;
+}
+
+.card {
+  background-image: linear-gradient(to right, #85ffbd, #fffb7d);
+}
+.card-header {
+  background-color: #f3f2c9;
+  font-weight: bold;
+  color: black;
+}
+
+.weather-data {
+  text-align: center;
+  margin: auto;
+}
+
+@media (max-width: 992px) {
+  .container {
+    padding-top: 10%;
+    margin: auto;
   }
-
-  .card-text{
+  .weather-data {
     text-align: center;
-    font-size: 18px;
+    margin: auto;
   }
-  
-  img{
-    border: 1px solid white;
-  
-  }
+}
+
+.hidden {
+  display: none;
+}
