@@ -1,116 +1,96 @@
-//To create a Title 
-let heading = document.createElement("h1");
-heading.setAttribute("id","title");
-heading.setAttribute("class","text-center");
-heading.innerHTML = "REST COUNTRIES AND WEATHER USING FETCH API";
-document.body.append(heading);
+const body = document.body;
+const div_1 = document.createElement("div");
+div_1.classList.add("container");
+body.append(div_1);
+const div_2 = document.createElement("div");
+div_2.classList.add("row", "country_row");
+div_1.append(div_2);
 
-//To create a CONTAINER
-const Container1 = document.createElement("div");
-Container1.setAttribute("class","container");
-Container1.setAttribute("id","hidden")
-document.body.append(Container1);
+async function getCountries() {
+  const res = await fetch("https://restcountries.com/v3.1/all");
+  const data = await res.json();
+  for (countries of data) {
+    const div_3 = document.createElement("div");
+    div_3.classList.add("card", "h-100", "col-lg-4", "col-sm-12");
+    div_2.append(div_3);
+    const div_4 = document.createElement("div");
+    div_4.classList.add("card-header", "text-center", "name");
+    div_4.textContent = `${countries?.name?.common}`;
+    div_3.append(div_4);
+    const img = document.createElement("img");
+    img.classList.add("card-img-top", "flag", "mt-3");
+    img.setAttribute(
+      "src",
+      `${countries?.flags?.png ? countries?.flags?.png : countries?.flags?.svg}`
+    );
+    div_3.append(img);
+    const div_5 = document.createElement("div");
+    div_5.classList.add("card-body");
+    div_3.append(div_5);
+    const div_6 = document.createElement("div");
+    div_6.classList.add("capital");
+    div_6.innerHTML = `Capital: <span>${countries?.capital[0]}</span>`;
+    const div_7 = document.createElement("div");
+    div_7.classList.add("Region");
+    div_7.innerHTML = `Region: <span>${countries?.region}</span>`;
+    const div_8 = document.createElement("div");
+    div_8.classList.add("latlng");
+    div_8.innerHTML = `LatLng: <span>${countries?.latlng[0]}, ${countries?.latlng[1]} </span>`;
+    const div_9 = document.createElement("div");
+    div_9.classList.add("country_code");
+    div_9.innerHTML = `Country Code: <span>${countries?.altSpellings[0]}</span>`;
+    const button = document.createElement("button");
+    button.classList.add("btn", "btn-primary");
+    button.textContent = "click for weather Check";
+    div_5.append(div_6, div_7, div_8, div_9, button);
+    const res2 = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?lat=${countries?.latlng[0]}&lon=${countries?.latlng[1]}&appid=fbb352a417c0f980535df5d4a273be35&units=metric`
+    );
+    const data2 = await res2.json();
+    button.addEventListener("click", myFunction);
 
-//To create ROW
-const Row1 = document.createElement("div");
-Row1.classList.add("row");
-Container1.append(Row1);
+    function myFunction() {
+      let a = div_4.textContent;
+      let b = img.getAttribute("src");
+      div_2.classList.add("hidden");
+      let x = [];
+      x.push(div_8.firstElementChild.textContent);
+      x = x[0].split(",").map(Number);
+      const div_a = document.createElement("div");
+      div_a.classList.add("container");
+      body.append(div_a);
+      const div_b = document.createElement("div");
+      div_b.classList.add("row", "country_row");
+      div_a.append(div_b);
+      const div_c = document.createElement("div");
+      div_c.classList.add("card", "col-lg-4", "col-sm-12", "text-center", "weather-data");
+      div_b.append(div_c);
+      const div_d = document.createElement("div");
+      div_d.classList.add("card-header", "text-center", "name");
+      div_d.textContent = `Country Name: ${a}`;
+      div_c.append(div_d);
+      
+      const div_body = document.createElement("div");
+      div_body.classList.add("card-body");
+      div_c.append(div_body);
+      const div_e = document.createElement("div");
+      div_e.classList.add("Weather");
+      div_e.innerHTML = `Weather: <span>${data2?.weather[0].description}</span>`;
+      const div_f = document.createElement("div");
+      div_f.classList.add("temp");
+      div_f.innerHTML = `temp: <span>${data2?.main.temp}°C </span>`;
+      const div_g = document.createElement("div");
+      div_g.classList.add("wind_speed");
+      div_g.innerHTML = `wind speed: <span>${data2?.wind.speed}m/sec </span>`;
+      const button2 = document.createElement("button");
+      button2.classList.add("btn", "btn-primary");
+      button2.textContent = "Click to return";
+      div_body.append(div_e, div_f, div_g, button2);
+      button2.addEventListener("click", () => {
+        location.reload();
+      });
+    }
+  }
+}
 
-//To get all country details from REST COUNTRIES API by using async/await and fetch()
-async function getCountries(){
-   const all = await fetch("https://restcountries.com/v3.1/all");
-   const data = await all.json();
-   //console.log(data);        //Output is Array of Object
-   data.forEach(country => { //To Loop all country
-    //console.log(country); //Output is 250 objects
-
-//To create a COLUMN
-   const Column1 = document.createElement("div");
-   Column1.setAttribute("class","col-4 col-sm-6 col-md-4 col-lg-4 col-xl-4 g-5");
-
-//To create a CARD
-   const card1 =document.createElement("div");
-   card1.setAttribute("class","card h-100 ");
-   card1.setAttribute("style","width: 18rem;");
-   card1.innerHTML = ` 
-       <div class="card-header">
-           <h4 class="card-text">${country.name.common}</h4>
-       </div>
-       <img class="card-img-top" src="${country.flags.png}" alt="">
-       <div class="card-body">
-         <div class="card-text">
-           <h6>Region : ${country.region}</h6>
-           <h6>Native Name: ${country.name.official}</h6>
-           <h6>Population: ${country.population}</h6>
-           <h6>Capital: ${country.capital}</h6>
-           <h6>Country Code: ${country.cca3}</h6>
-           <h6>Latlng: ${country.latlng}</h6>
-         </div>
-       </div>`;
-
-//To create a BUTTON inside the card
-   const button = document.createElement("button");
-   button.classList.add("btn", "btn-primary");
-   button.textContent = "Click for Weather";
-   card1.append(button);
-   Column1.append(card1);
-   Row1.append(Column1);
-
-// Button ONCLICK Function to get WEATHER REPORT
- button.addEventListener("click", weatherReport); 
-
-//To get all country WEATHER REPORT details from OPENWEATHERMAP API by using async/await and fetch()
- async function weatherReport(){
-   const weather = await fetch (`https://api.openweathermap.org/data/2.5/weather?q=${country.name.common}&appid=ca112fd8ff007a6940a08407c211d787`);
-   const weatherData = await weather.json();
- //console.log(weatherData);
-   document.getElementById("hidden").innerHTML = ""; // to hidden the above container1 
-
-// To create a CONTAINER
-   const Container2 = document.createElement("div");
-   Container2.setAttribute("class","container");
-   document.body.append(Container2);
-   
-//To create a ROW
-   let Row2 = document.createElement("div");
-   Row2.classList.add("row","g-3","container");
-   Container2.append(Row2);
-
-//To create COLUMN
-   let Column2 = document.createElement("div");
-   Column2.setAttribute("class","col col-lg-4 col-sm-12");
-   Row2.append(Column2);
-
-//To create CARD
-   let card2 =document.createElement("div");
-   card2.setAttribute("class","card h-100");
-   card2.setAttribute("style","width: 18rem;");
-   card2.innerHTML = ` <div class="card-header">
-     <h4 class="card-text">${country.name.common}</h4>
-     </div>
-        <img src="${country.flags.svg}" alt="">
-       <div class="card-body">
-       <h6 class="card-text">Temperature: ${weatherData.main.temp}</h6>
-       <h6 class="card-text">Ground-Level: ${weatherData.main.grnd_level}</h6>
-       <h6 class="card-text">Humidity: ${weatherData.main.humidity}</h6>
-       <h6 class="card-text">Pressure: ${weatherData.main.pressure}</h6>
-       <h6 class="card-text">Sea-Level: ${weatherData.main.sea_level}</h6>
-       <h6 class="card-text">Temp-Max: ${weatherData.main.temp_max}</h6>
-       <h6 class="card-text">Temp-Min: ${weatherData.main.temp_min}</h6>
-      </div>`;
-   Column2.append(card2);
-
-//To create reset button inside the card
-   let button1 = document.createElement("button");
-   button1.setAttribute("class","btn btn-primary");
-   button1.innerText = "Reset";
-   card2.append(button1);
-   
-//Location reload 
-   button1.addEventListener("click",()=>{
-     location.reload()
-   })
-}//Weather Report async function
-});//loop all contry
-}//getcountries async function
-getCountries()//function invoke
+getCountries();
